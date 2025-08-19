@@ -1,0 +1,10 @@
+{
+  "java.project.sourcePaths": ["src"],
+  "java.project.outputPath": "build",
+  "java.project.referencedLibraries": ["lib/**/*.jar"],
+  "java.import.exclusions": ["**/packaging_tools/**"],
+  "java.configuration.runtimes": [
+    { "name": "JavaSE-17", "path": "/usr/lib/jvm/java-17-openjdk-amd64", "default": true }
+],
+"java.debug.settings.onBuildFailureProceed": true
+}

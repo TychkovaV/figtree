@@ -110,6 +110,10 @@ public class FigTreeFrame extends DocumentFrame implements FigTreeFileMenuHandle
         });
     }
 
+    public JComponent getContentPaneWorkaround() {
+        return treeViewer.getContentPane();
+    }
+
     public void initializeComponents() {
 
         setSize(new java.awt.Dimension(1024, 768));
@@ -778,6 +782,13 @@ public class FigTreeFrame extends DocumentFrame implements FigTreeFileMenuHandle
 
             treeViewer.setTrees(trees);
             controlPalette.setSettings(settings);
+            //SwingUtilities.invokeLater(() -> SwingUtilities.invokeLater(() -> {try {wait(5000); controlPalette.setSettings(settings);} catch(Exception e) {System.out.println(e);}}));
+            //SwingUtilities.invokeLater(() -> SwingUtilities.invokeLater(() -> {try {wait(5000); treeViewer.setVerticalExpansion(((double) 360) / 1000);} catch(Exception e) {System.out.println(e);}}));
+            SwingUtilities.invokeLater(() -> {
+                javax.swing.Timer t = new javax.swing.Timer(1000, e -> {treeViewer.setVerticalExpansion(((double) 360) / 1000);});
+                t.setRepeats(false);
+                t.start();
+            });
         } catch (ImportException ie) {
             JOptionPane.showMessageDialog(this, "Error reading tree file: \n" + ie.getMessage(),
                     "Import Error",

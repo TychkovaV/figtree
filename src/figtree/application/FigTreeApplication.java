@@ -413,7 +413,23 @@ public class FigTreeApplication extends MultiDocApplication {
                     } catch (IOException e) {
                     }
                 } else {
-                    application.doOpen(arg);
+                    FigTreeFrame frame = (FigTreeFrame)application.doOpen(arg); // creating window
+                    frame.setSize(2560, 1800);
+                    SwingUtilities.invokeLater(() -> {
+                        javax.swing.Timer t = new javax.swing.Timer(1200, e -> {
+                            try {
+                                OutputStream stream = new FileOutputStream(arg+".svg");
+                                FigTreeFrame.exportGraphics(GraphicFormat.SVG, frame.getContentPaneWorkaround(), stream);
+                                stream.flush();
+                                stream.close();
+                                frame.doCloseWindow();
+                            }
+                            catch (Exception ee) {
+                            }
+                        });
+                        t.setRepeats(false);
+                        t.start();
+                    });
                 }
             }
         }

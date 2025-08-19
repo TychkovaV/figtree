@@ -1,0 +1,25 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Debug FigTree (explicit cp)",
+      "request": "launch",
+      "mainClass": "figtree.application.FigTreeApplication",
+      "classPaths": [
+        "${workspaceFolder}/build",
+        "${workspaceFolder}/lib/*"
+      ],
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "args": ["../../varya/job/phil_trees/CGIE/2025/res3/Center_of_Hygiene_and_Epidemiology_in_Astrakhan_Region/A_H1N1.treefile"],
+    },
+    {
+      "type": "java",
+      "name": "Attach to FigTree :5005",
+      "request": "attach",
+      "hostName": "127.0.0.1",
+      "port": 5005
+    }
+  ]
+}
