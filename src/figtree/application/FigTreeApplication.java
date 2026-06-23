@@ -151,7 +151,7 @@ public class FigTreeApplication extends MultiDocApplication {
 
             controlPalette.setSettings(settings);
 
-            treeViewer.getContentPane().setSize(width, height);
+            treeViewer.getContentPane().setSize(graphicSizeForSettings(width, height, trees, settings));
 
             OutputStream stream;
             if (graphicFileName != null) {
@@ -189,6 +189,27 @@ public class FigTreeApplication extends MultiDocApplication {
             throw new RuntimeException("Error writing graphic file: " + de.getMessage());
         }
 
+    }
+
+    private static Dimension graphicSizeForSettings(int width, int height, List<Tree> trees, Map<String, Object> settings) {
+        int tipCount = 50;
+        if (!trees.isEmpty()) {
+            tipCount = Math.max(trees.get(0).getTaxa().size(), tipCount);
+        }
+
+        double zoom = sliderZoom(settings.get("layout.zoom"), tipCount);
+        double verticalExpansion = sliderZoom(settings.get("layout.expansion"), tipCount);
+        int exportWidth = Math.max(1, (int)Math.round(width * (1.0 + zoom)));
+        int exportHeight = Math.max(1, (int)Math.round(height * (1.0 + zoom + verticalExpansion)));
+        return new Dimension(exportWidth, exportHeight);
+    }
+
+    private static double sliderZoom(Object value, int tipCount) {
+        if (!(value instanceof Number)) {
+            return 0.0;
+        }
+        double slider = ((Number)value).doubleValue() / 1000.0;
+        return Math.pow(slider * tipCount * 0.02, 1.2);
     }
 
     public static void centreLine(String line, int pageWidth) {
